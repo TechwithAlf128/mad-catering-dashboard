@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="seeded-leads.js"></script>
 <style>
   :root {
     --jakes-bg: #0f172a;
@@ -360,69 +361,9 @@ const BRANDS = {
   }
 };
 
-// Nearby businesses seeded per location (10-15 each)
-const NEARBY = {
-  j1:  [ // Addison
-    { name:'AECOM',              type:'Engineering Firm',    employees:'200+' },
-    { name:'Fidelity Investments',type:'Financial Services', employees:'500+' },
-    { name:'Nationstar Mortgage', type:'Financial Services', employees:'300+' },
-    { name:'Match Group HQ',      type:'Tech Company',       employees:'1000+'},
-    { name:'Addison Airport FBO', type:'Aviation/Logistics', employees:'50+'  },
-    { name:'Cinemark HQ',         type:'Entertainment',      employees:'200+' },
-    { name:'Pizza Hut Corp',      type:'Corporate Office',   employees:'400+' },
-    { name:'Concentra Medical',   type:'Healthcare',         employees:'100+' },
-    { name:'LA Fitness Corporate',type:'Health & Fitness',   employees:'50+'  },
-    { name:'Stonebriar of Addison',type:'Senior Living',     employees:'75+'  },
-  ],
-  j4:  [ // Energy Square / Greenville
-    { name:'Baylor Scott & White', type:'Healthcare',         employees:'500+' },
-    { name:'Capital One (Greenville)',type:'Financial Services',employees:'200+'},
-    { name:'Salesforce Dallas',    type:'Tech Company',       employees:'150+' },
-    { name:'Frost Bank Dallas',    type:'Banking',            employees:'100+' },
-    { name:'UNT System Office',    type:'Education',          employees:'200+' },
-    { name:'Lennox International', type:'Manufacturing',      employees:'300+' },
-    { name:'Toyota Connected',     type:'Tech/Auto',          employees:'150+' },
-    { name:'Keurig Dr Pepper HQ',  type:'Consumer Goods',     employees:'400+' },
-    { name:'Weir Oil & Gas',       type:'Energy',             employees:'100+' },
-    { name:'Caliber Collision HQ', type:'Corporate Office',   employees:'200+' },
-  ],
-  j6:  [ // Frisco Square
-    { name:'Keurig Dr Pepper Frisco',type:'Corporate',        employees:'500+' },
-    { name:'Hall Park Office',       type:'Mixed-Use Office', employees:'800+' },
-    { name:'Toyota NA HQ',           type:'Automotive',       employees:'2000+'},
-    { name:'PGA of America HQ',      type:'Sports Org',       employees:'200+' },
-    { name:'Topgolf HQ',             type:'Entertainment',    employees:'300+' },
-    { name:'Liberty Mutual Frisco',  type:'Insurance',        employees:'200+' },
-    { name:'Stonebriar Centre Corp', type:'Retail/Office',    employees:'150+' },
-    { name:'Compass Group',          type:'Food Services',    employees:'100+' },
-    { name:'Frisco ISD Admin',       type:'Education',        employees:'400+' },
-    { name:'NCR Atleos',             type:'FinTech',          employees:'200+' },
-  ],
-  j13: [ // Sundance Square / Fort Worth
-    { name:'American Airlines HQ',  type:'Aviation',          employees:'5000+'},
-    { name:'TPG Capital',           type:'Private Equity',    employees:'200+' },
-    { name:'BNSF Railway HQ',       type:'Transportation',    employees:'1000+'},
-    { name:'Charles Schwab Ft Worth',type:'Financial Services',employees:'500+'},
-    { name:'Pier 1 Imports (legacy)',type:'Corporate Office', employees:'150+' },
-    { name:'Alcon Laboratories',    type:'Healthcare',        employees:'2000+'},
-    { name:'XTO Energy HQ',         type:'Energy',            employees:'500+' },
-    { name:'RadioShack Corp',       type:'Retail/Office',     employees:'100+' },
-    { name:'Fort Worth ISD Admin',  type:'Education',         employees:'300+' },
-    { name:'Cook Children\'s Medical',type:'Healthcare',      employees:'1000+'},
-  ],
-  t1:  [ // Carrollton
-    { name:'Fujitsu Network Comm.',  type:'Tech Company',      employees:'300+' },
-    { name:'Wolters Kluwer Carrollton',type:'Software',        employees:'200+' },
-    { name:'Carrollton Fire Dept',   type:'Government',        employees:'150+' },
-    { name:'Carrollton City Hall',   type:'Government',        employees:'200+' },
-    { name:'FlexSteel Industries',   type:'Manufacturing',     employees:'100+' },
-    { name:'Sabre Corporation',      type:'Tech/Travel',       employees:'500+' },
-    { name:'Concentra HQ',          type:'Healthcare',         employees:'300+' },
-    { name:'Carrollton-FB ISD',      type:'Education',         employees:'400+' },
-    { name:'Dr Pepper Ballpark area',type:'Sports/Events',     employees:'200+' },
-    { name:'McLeodUSA (Carrollton)', type:'Telecom',           employees:'150+' },
-  ],
-};
+// Nearby businesses seeded per location — REAL companies researched March 2026
+// Full data loaded from seeded-leads.js as NEARBY_OVERRIDE
+const NEARBY = (typeof NEARBY_OVERRIDE !== 'undefined') ? NEARBY_OVERRIDE : {};
 
 // Default nearby for locations without specific data
 const DEFAULT_NEARBY = [
@@ -435,6 +376,8 @@ const DEFAULT_NEARBY = [
   { name:'Real Estate Brokerage',  type:'Real Estate',       employees:'30+' },
   { name:'Credit Union',           type:'Financial Services',employees:'60+' },
 ];
+
+
 
 // Demographics data per location
 const DEMOGRAPHICS = {
@@ -822,9 +765,23 @@ document.getElementById('crmModal').addEventListener('click', function(e) {
 });
 
 // ═══════════════════════════════════════════
+// SEED INITIAL DATA
+// ═══════════════════════════════════════════
+function seedInitialData() {
+  if (localStorage.getItem('mad_crm_seeded')) return;
+  const existing = getCRM();
+  const toAdd = (typeof SEEDED_LEADS !== 'undefined')
+    ? SEEDED_LEADS.filter(s => !existing.find(e => e.name === s.name && e.location === s.location))
+    : [];
+  saveCRM([...existing, ...toAdd]);
+  localStorage.setItem('mad_crm_seeded', '1');
+}
+
+// ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  seedInitialData();
   renderLocList();
   renderMap();
   updateStats();
