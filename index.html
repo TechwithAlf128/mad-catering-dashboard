@@ -782,13 +782,13 @@ document.getElementById('crmModal').addEventListener('click', function(e) {
 // SEED INITIAL DATA
 // ═══════════════════════════════════════════
 function seedInitialData() {
-  if (localStorage.getItem('mad_crm_seeded')) return;
-  const existing = getCRM();
-  const toAdd = (typeof SEEDED_LEADS !== 'undefined')
-    ? SEEDED_LEADS.filter(s => !existing.find(e => e.name === s.name && e.location === s.location))
-    : [];
-  saveCRM([...existing, ...toAdd]);
-  localStorage.setItem('mad_crm_seeded', '1');
+  const SEED_VERSION = 'v3'; // bumped to force re-seed with real website URLs
+  if (localStorage.getItem('mad_crm_seeded') === SEED_VERSION) return;
+  // Keep any manually added leads (non-seeded), replace all seed_ leads fresh
+  const manualLeads = getCRM().filter(l => !l.id.startsWith('seed_'));
+  const seedLeads = (typeof SEEDED_LEADS !== 'undefined') ? SEEDED_LEADS : [];
+  saveCRM([...manualLeads, ...seedLeads]);
+  localStorage.setItem('mad_crm_seeded', SEED_VERSION);
 }
 
 // ═══════════════════════════════════════════
