@@ -782,12 +782,18 @@ document.getElementById('crmModal').addEventListener('click', function(e) {
 // SEED INITIAL DATA
 // ═══════════════════════════════════════════
 function seedInitialData() {
-  const SEED_VERSION = 'v3'; // bumped to force re-seed with real website URLs
-  if (localStorage.getItem('mad_crm_seeded') === SEED_VERSION) return;
-  // Keep any manually added leads (non-seeded), replace all seed_ leads fresh
-  const manualLeads = getCRM().filter(l => !l.id.startsWith('seed_'));
+  const SEED_VERSION = 'v4';
   const seedLeads = (typeof SEEDED_LEADS !== 'undefined') ? SEEDED_LEADS : [];
-  saveCRM([...manualLeads, ...seedLeads]);
+  // Always patch existing seeded leads with latest data (picks up new fields like website)
+  const crm = getCRM();
+  const manual = crm.filter(l => !l.id.startsWith('seed_'));
+  // Merge: for each seed lead, use latest seed data but preserve status changes made by user
+  const merged = seedLeads.map(s => {
+    const existing = crm.find(e => e.id === s.id);
+    if (existing) return { ...s, status: existing.status, contact: existing.contact, notes: existing.notes };
+    return s;
+  });
+  saveCRM([...manual, ...merged]);
   localStorage.setItem('mad_crm_seeded', SEED_VERSION);
 }
 
