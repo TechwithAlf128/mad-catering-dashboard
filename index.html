@@ -211,6 +211,126 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .empty-state { padding: 32px 16px; text-align: center; color: var(--text3); font-size: 13px; }
+
+  /* ── MOBILE NAV BAR ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    background: var(--bg2); border-top: 1px solid var(--border);
+    height: 56px;
+  }
+  .mobile-nav-inner { display: flex; height: 100%; }
+  .mnav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; border: none; background: transparent; color: var(--text3);
+    font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer; transition: color 0.15s;
+  }
+  .mnav-btn .micon { font-size: 20px; line-height: 1; }
+  .mnav-btn.active { color: var(--accent); }
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 767px) {
+    /* Header */
+    .header { padding: 0 14px; height: 52px; }
+    .header-sub { display: none; }
+    .header-logo { font-size: 15px; }
+    .brand-btn { padding: 5px 10px; font-size: 11px; }
+    .header-stat { display: none; }
+
+    /* Layout: single column, full height minus header + bottom nav */
+    .main { 
+      grid-template-columns: 1fr; 
+      grid-template-rows: 1fr;
+      height: calc(100vh - 52px - 56px);
+    }
+
+    /* Sidebar becomes a panel, hidden by default, shown via mobile nav */
+    .sidebar {
+      display: none;
+      position: fixed; top: 52px; left: 0; right: 0; bottom: 56px; z-index: 150;
+      overflow-y: auto;
+    }
+    .sidebar.mobile-visible { display: flex; }
+
+    /* Map panel takes full area */
+    .map-panel { display: flex; flex-direction: column; }
+    .map-panel.mobile-hidden { display: none; }
+    #map { flex: 1; }
+
+    /* Stats strip: horizontal scroll */
+    .stats-strip { 
+      overflow-x: auto; overflow-y: hidden;
+      flex-wrap: nowrap; flex-shrink: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+    .strip-stat { min-width: 90px; padding: 8px 12px; }
+    .strip-val { font-size: 16px; }
+
+    /* Detail drawer becomes bottom sheet */
+    .detail-drawer {
+      position: fixed; left: 0; right: 0; bottom: 56px; z-index: 140;
+      max-height: 70vh; overflow-y: auto;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+    }
+    .detail-drawer.open { height: auto; max-height: 70vh; }
+    .detail-inner { 
+      grid-template-columns: 1fr;
+      height: auto;
+      padding: 16px;
+      gap: 16px;
+    }
+    /* Add drag handle */
+    .detail-drawer::before {
+      content: '';
+      display: block;
+      width: 36px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 10px auto 0;
+    }
+
+    /* Modal: full screen on mobile */
+    .modal-overlay { align-items: flex-end; }
+    .modal {
+      width: 100%; max-width: 100%; 
+      border-radius: 16px 16px 0 0;
+      padding: 20px 16px 32px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Sidebar tabs bigger touch targets */
+    .s-tab { padding: 14px 8px; font-size: 12px; }
+
+    /* Location items bigger */
+    .loc-item { padding: 14px 16px; }
+
+    /* CRM toolbar wraps nicely */
+    .crm-toolbar { flex-wrap: wrap; gap: 6px; }
+    .crm-search { min-width: 100%; order: -1; }
+
+    /* Show mobile nav */
+    .mobile-nav { display: block; }
+
+    /* Bottom safe area */
+    body { padding-bottom: 0; }
+
+    /* Biz card stacks on small screens */
+    .biz-card { flex-wrap: wrap; gap: 8px; }
+    .biz-add-btn { align-self: flex-end; }
+
+    /* Form grids go single column */
+    .modal [style*="grid-template-columns:1fr 1fr"] {
+      display: block !important;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .brand-btn { padding: 4px 8px; font-size: 10px; }
+    .header-logo { font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -273,6 +393,24 @@
     <div class="detail-drawer" id="detailDrawer">
       <div class="detail-inner" id="detailInner"></div>
     </div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mnav-btn active" id="mnavMap" onclick="mobileNav('map')">
+      <span class="micon">🗺️</span>Map
+    </button>
+    <button class="mnav-btn" id="mnavLocs" onclick="mobileNav('locations')">
+      <span class="micon">📍</span>Locations
+    </button>
+    <button class="mnav-btn" id="mnavCRM" onclick="mobileNav('crm')">
+      <span class="micon">👥</span>CRM
+    </button>
+    <button class="mnav-btn" id="mnavAdd" onclick="openModal(null, selectedLoc?.id)">
+      <span class="micon">➕</span>Add Lead
+    </button>
   </div>
 </div>
 
@@ -526,6 +664,11 @@ function selectLoc(id) {
     map.setView([selectedLoc.lat, selectedLoc.lng], 13, { animate: true });
     markers[id].openPopup();
   }
+
+  // On mobile: switch to map view to show the detail drawer
+  if (window.innerWidth <= 767) {
+    setTimeout(() => mobileNav('map'), 50);
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -777,6 +920,42 @@ function escQ(str) {
 document.getElementById('crmModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+// ═══════════════════════════════════════════
+// MOBILE NAV
+// ═══════════════════════════════════════════
+let mobileView = 'map';
+function mobileNav(view) {
+  if (window.innerWidth > 767) return;
+  mobileView = view;
+  const sidebar = document.querySelector('.sidebar');
+  const mapPanel = document.querySelector('.map-panel');
+
+  // Update active button
+  ['mnavMap','mnavLocs','mnavCRM'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.remove('active');
+  });
+
+  if (view === 'map') {
+    sidebar.classList.remove('mobile-visible');
+    mapPanel.classList.remove('mobile-hidden');
+    document.getElementById('mnavMap')?.classList.add('active');
+    setTimeout(() => map && map.invalidateSize(), 100);
+  } else if (view === 'locations') {
+    sidebar.classList.add('mobile-visible');
+    mapPanel.classList.add('mobile-hidden');
+    showTab('locations');
+    document.getElementById('mnavLocs')?.classList.add('active');
+  } else if (view === 'crm') {
+    sidebar.classList.add('mobile-visible');
+    mapPanel.classList.add('mobile-hidden');
+    showTab('crm');
+    document.getElementById('mnavCRM')?.classList.add('active');
+  }
+}
+
+
 
 // ═══════════════════════════════════════════
 // SEED INITIAL DATA
