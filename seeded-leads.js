@@ -9,6 +9,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_1',
     name: 'Concentra Health Services',
+    website: 'https://www.concentra.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-720-7777',
@@ -23,6 +24,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_2',
     name: 'Gallagher Insurance (Arthur J. Gallagher)',
+    website: 'https://www.ajg.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-386-4000',
@@ -51,6 +53,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_4',
     name: 'Anblicks',
+    website: 'https://www.anblicks.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-638-6600',
@@ -65,6 +68,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_5',
     name: 'National Teachers Associates Life Insurance',
+    website: 'https://www.nta-life.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-581-5000',
@@ -79,6 +83,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_6',
     name: 'Barrett Burke Wilson & Castle',
+    website: 'https://www.bbwclaw.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-386-5040',
@@ -93,6 +98,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_7',
     name: 'Accolite Digital',
+    website: 'https://www.accolite.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '972-490-5000',
@@ -107,6 +113,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j1_8',
     name: 'Guaranty Bancshares',
+    website: 'https://www.gnty.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-774-5800',
@@ -125,6 +132,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_1',
     name: 'Aledo ISD',
+    website: 'https://www.aledoisd.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-441-5100',
@@ -139,6 +147,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_2',
     name: 'Parker County Hospital District',
+    website: 'https://www.parkerwayne.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-598-8700',
@@ -153,6 +162,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_3',
     name: 'Aledo Workspace / Champions Business Park',
+    website: 'https://www.aledoworkspace.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '817-441-7661',
@@ -167,6 +177,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_4',
     name: 'Walsh Ranch / Walsh Community HOA',
+    website: 'https://www.walshranch.com',
     contact: 'Contact via website',
     title: 'Community Manager',
     phone: '817-886-5200',
@@ -181,6 +192,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_5',
     name: 'Parker County Appraisal District',
+    website: 'https://www.parkercad.org',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-596-0077',
@@ -195,6 +207,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j2_6',
     name: 'Benbrook Bank',
+    website: 'https://www.benbrookbank.com',
     contact: 'Contact via website',
     title: 'Branch Manager',
     phone: '817-249-6600',
@@ -213,6 +226,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j3_1',
     name: 'Benbrook Area Chamber of Commerce Members',
+    website: 'https://www.benbrookchamber.org',
     contact: 'Contact via website',
     title: 'Executive Director',
     phone: '817-249-4451',
@@ -227,6 +241,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j3_2',
     name: 'Fort Worth ISD — Southwest Region Schools',
+    website: 'https://www.fwisd.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-871-2000',
@@ -241,6 +256,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j3_3',
     name: 'Alcon (Fort Worth/Benbrook area)',
+    website: 'https://www.alcon.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-293-0450',
@@ -255,6 +271,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j3_4',
     name: 'ANGMAR Medical Holdings (Benbrook/Fort Worth)',
+    website: 'https://www.angmarmedical.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-249-9000',
@@ -273,6 +290,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_1',
     name: 'Energy Square (One Energy Square Tenants)',
+    website: 'https://www.energysquaredallas.com',
     contact: 'Contact via website',
     title: 'Property Manager',
     phone: '214-443-9000',
@@ -287,6 +305,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_2',
     name: 'Regus / IWG (Energy Square 2)',
+    website: 'https://www.regus.com',
     contact: 'Contact via website',
     title: 'Center Manager',
     phone: '214-420-5900',
@@ -301,6 +320,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_3',
     name: 'AT&T Corporate (North Central Expressway)',
+    website: 'https://www.att.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '214-821-4105',
@@ -316,6 +336,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_4',
     name: 'Parkland Health & Hospital System',
+    website: 'https://www.parklandhealth.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '214-266-2000',
@@ -330,6 +351,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_5',
     name: 'Axxess (Home Health Technology)',
+    website: 'https://www.axxess.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '214-575-5800',
@@ -344,6 +366,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_6',
     name: 'Lincoln Property Company',
+    website: 'https://www.lincolnproperty.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-740-3300',
@@ -358,6 +381,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_7',
     name: 'BancorpSouth / Cadence Bank (Upper Greenville)',
+    website: 'https://www.cadencebank.com',
     contact: 'Contact via website',
     title: 'Branch Manager',
     phone: '214-368-1200',
@@ -372,6 +396,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j4_8',
     name: 'Marsh & McLennan Agency Dallas',
+    website: 'https://www.marshmma.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-750-5800',
@@ -390,6 +415,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_1',
     name: 'Texas Health Presbyterian Hospital Flower Mound',
+    website: 'https://www.texashealth.org/flower-mound',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-899-8000',
@@ -404,6 +430,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_2',
     name: 'CTDI (Communication Test Design Inc.)',
+    website: 'https://www.ctdi.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-539-8000',
@@ -418,6 +445,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_3',
     name: 'Stryker Communications',
+    website: 'https://www.stryker.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-432-6400',
@@ -432,6 +460,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_4',
     name: 'Likewize (formerly Brightstar)',
+    website: 'https://www.likewize.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-956-7000',
@@ -446,6 +475,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_5',
     name: 'Mannatech Inc.',
+    website: 'https://www.mannatech.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '972-471-7400',
@@ -460,6 +490,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_6',
     name: 'Intellicentrics',
+    website: 'https://www.intellicentrics.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-580-1700',
@@ -474,6 +505,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_7',
     name: 'Premier Nationwide Lending',
+    website: 'https://www.premiernationwide.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-355-4100',
@@ -488,6 +520,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j5_8',
     name: 'Whitlock (AV Technology)',
+    website: 'https://www.whitlock.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-874-9900',
@@ -506,6 +539,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_1',
     name: 'TIAA (Frisco Corporate Center)',
+    website: 'https://www.tiaa.org',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '817-571-7100',
@@ -520,6 +554,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_2',
     name: 'Thomson Reuters (Frisco Office)',
+    website: 'https://www.thomsonreuters.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-250-7000',
@@ -534,6 +569,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_3',
     name: 'T-Mobile (Frisco)',
+    website: 'https://www.t-mobile.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-918-5000',
@@ -548,6 +584,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_4',
     name: 'PGA of America (Frisco HQ)',
+    website: 'https://www.pgaofamerica.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '561-624-8400',
@@ -562,6 +599,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_5',
     name: 'HALL Park (Frisco office tenants)',
+    website: 'https://www.hallpark.com',
     contact: 'Contact via website',
     title: 'Property Manager',
     phone: '972-377-4255',
@@ -576,6 +614,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_6',
     name: 'Toyota Financial Services (Plano/Frisco)',
+    website: 'https://www.toyotafinancial.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-370-7000',
@@ -590,6 +629,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_7',
     name: 'Keurig Dr Pepper (Frisco/Plano)',
+    website: 'https://www.keurigdrpepper.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-673-7000',
@@ -604,6 +644,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j6_8',
     name: 'Frisco Economic Development Corporation',
+    website: 'https://www.friscoedc.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-292-5150',
@@ -622,6 +663,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_1',
     name: 'Lockheed Martin Missiles & Fire Control',
+    website: 'https://www.lockheedmartin.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-603-1000',
@@ -636,6 +678,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_2',
     name: 'Turbomeca USA (Safran Helicopter Engines)',
+    website: 'https://www.safran-helicopter-engines.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-641-3460',
@@ -650,6 +693,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_3',
     name: 'Poly-America',
+    website: 'https://www.poly-america.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-337-2000',
@@ -664,6 +708,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_4',
     name: 'Six Flags Entertainment (Corporate HQ)',
+    website: 'https://www.sixflags.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '972-595-5000',
@@ -678,6 +723,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_5',
     name: 'Grand Prairie ISD',
+    website: 'https://www.gpisd.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-264-6100',
@@ -692,6 +738,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_6',
     name: 'Texas Health Arlington Memorial Hospital',
+    website: 'https://www.texashealth.org/arlington',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-548-6100',
@@ -706,6 +753,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j7_7',
     name: 'American Income Life Insurance (Grand Prairie)',
+    website: 'https://www.ailife.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-264-7672',
@@ -724,6 +772,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_1',
     name: 'GameStop Corporation (HQ)',
+    website: 'https://www.gamestop.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '817-424-2000',
@@ -738,6 +787,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_2',
     name: 'Kubota Tractor (North American HQ)',
+    website: 'https://www.kubotausa.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '888-458-2682',
@@ -752,6 +802,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_3',
     name: 'Baylor Scott & White Medical Center — Grapevine',
+    website: 'https://www.bswhealth.com/locations/baylor-scott-white-medical-center-grapevine',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-251-5200',
@@ -766,6 +817,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_4',
     name: 'DFW International Airport (Admin Offices)',
+    website: 'https://www.dfwairport.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-973-8888',
@@ -780,6 +832,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_5',
     name: 'Paycom Software (Grapevine)',
+    website: 'https://www.paycom.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '405-722-6900',
@@ -794,6 +847,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_6',
     name: 'GE Capital Aviation Services (GECAS)',
+    website: 'https://www.gecas.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-868-4100',
@@ -808,6 +862,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j8_7',
     name: 'Gaylord Texan Resort (Corporate Group Sales)',
+    website: 'https://www.marriott.com/en-us/hotels/dfwgw-gaylord-texan-resort-and-convention-center',
     contact: 'Contact via website',
     title: 'Catering Manager',
     phone: '817-778-1000',
@@ -826,6 +881,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_1',
     name: 'Texas Health Presbyterian Hospital Dallas',
+    website: 'https://www.texashealth.org/dallas',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '214-345-6789',
@@ -840,6 +896,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_2',
     name: 'RISD (Richardson ISD) Administrative Office',
+    website: 'https://www.risd.org',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '469-593-0000',
@@ -854,6 +911,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_3',
     name: 'State Farm Insurance (Richardson/Lake Highlands)',
+    website: 'https://www.statefarm.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-680-7200',
@@ -868,6 +926,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_4',
     name: 'MD Medical Group — Skillman',
+    website: 'https://www.mdmedicalgroup.us',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-466-6376',
@@ -882,6 +941,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_5',
     name: 'Frisco Street Capital (Lake Highlands area)',
+    website: 'https://www.ppcfinancial.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-987-3000',
@@ -896,6 +956,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j9_6',
     name: 'Encompass Health Rehabilitation Hospital of Dallas',
+    website: 'https://www.encompasshealth.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '214-368-2700',
@@ -914,6 +975,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_1',
     name: 'Methodist Mansfield Medical Center',
+    website: 'https://www.methodisthealthsystem.org/mansfield',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '682-242-2000',
@@ -928,6 +990,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_2',
     name: 'Klein Tools (Mansfield)',
+    website: 'https://www.kleintools.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-477-8450',
@@ -942,6 +1005,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_3',
     name: 'Mouser Electronics',
+    website: 'https://www.mouser.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '817-804-3888',
@@ -956,6 +1020,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_4',
     name: 'Hoffman Cabinets Inc.',
+    website: 'https://www.hoffmancabinets.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-473-1113',
@@ -970,6 +1035,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_5',
     name: 'BCB Transport',
+    website: 'https://www.bcbtransport.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '682-518-1162',
@@ -984,6 +1050,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j10_6',
     name: 'Mansfield ISD',
+    website: 'https://www.mansfieldisd.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-299-6300',
@@ -1002,6 +1069,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_1',
     name: 'Parkland Health (Northwest Dallas Clinics)',
+    website: 'https://www.parklandhealth.org',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-590-8000',
@@ -1016,6 +1084,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_2',
     name: 'Citibank (Northwest Dallas)',
+    website: 'https://www.citibank.com',
     contact: 'Contact via website',
     title: 'Branch Manager',
     phone: '214-363-5700',
@@ -1030,6 +1099,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_3',
     name: 'Carrollton-Farmers Branch ISD (NW Campus)',
+    website: 'https://www.cfbisd.edu',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-968-6100',
@@ -1044,6 +1114,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_4',
     name: 'American Heart Association (Dallas HQ)',
+    website: 'https://www.heart.org',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '214-369-3300',
@@ -1058,6 +1129,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_5',
     name: 'Brookhaven College',
+    website: 'https://www.brookhavencollege.edu',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-860-4700',
@@ -1072,6 +1144,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_6',
     name: 'Nationwide Insurance (NW Dallas)',
+    website: 'https://www.nationwide.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '214-351-6000',
@@ -1086,6 +1159,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j11_7',
     name: 'CHRISTUS Health (Dallas office)',
+    website: 'https://www.christushealth.org',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '214-367-4000',
@@ -1104,6 +1178,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_1',
     name: 'Methodist Richardson Medical Center',
+    website: 'https://www.methodisthealthsystem.org/richardson',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-498-4000',
@@ -1118,6 +1193,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_2',
     name: 'Garland ISD Administrative Offices',
+    website: 'https://www.garlandisd.net',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-494-8201',
@@ -1132,6 +1208,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_3',
     name: 'Sachse City Hall / City of Sachse',
+    website: 'https://www.cityofsachse.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-495-1212',
@@ -1146,6 +1223,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_4',
     name: 'Staff Perm (IT & Financial Staffing)',
+    website: 'https://www.staffperm.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '469-236-7508',
@@ -1160,6 +1238,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_5',
     name: 'Wylie ISD Administrative Center',
+    website: 'https://www.wylieisd.net',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-429-3000',
@@ -1174,6 +1253,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j12_6',
     name: 'Texas Health Physicians Group (Sachse/Rowlett)',
+    website: 'https://www.texashealth.org',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-412-1050',
@@ -1192,6 +1272,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_1',
     name: 'Kelly Hart & Hallman LLP',
+    website: 'https://www.kellyhart.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-332-2500',
@@ -1206,6 +1287,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_2',
     name: 'Haynes and Boone LLP (Fort Worth)',
+    website: 'https://www.haynesboone.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-347-6600',
@@ -1220,6 +1302,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_3',
     name: 'XTO Energy (ExxonMobil subsidiary)',
+    website: 'https://www.xtoenergy.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '817-885-3000',
@@ -1234,6 +1317,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_4',
     name: 'American Airlines (Fort Worth HQ)',
+    website: 'https://www.aa.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-963-1234',
@@ -1248,6 +1332,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_5',
     name: 'Sundance Square Management',
+    website: 'https://www.sundancesquare.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '817-255-5700',
@@ -1262,6 +1347,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_6',
     name: 'BNSF Railway (Fort Worth HQ)',
+    website: 'https://www.bnsf.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '817-352-1000',
@@ -1276,6 +1362,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_7',
     name: 'Tarrant County Bar Association',
+    website: 'https://www.tarrantbar.org',
     contact: 'Contact via website',
     title: 'Executive Director',
     phone: '817-338-4092',
@@ -1290,6 +1377,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j13_8',
     name: 'Pier 1 Imports (Former HQ / current tenants)',
+    website: 'https://www.pier1.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-252-8000',
@@ -1308,6 +1396,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_1',
     name: 'Baylor Scott & White Medical Center — Hillcrest',
+    website: 'https://www.bswhealth.com/locations/baylor-scott-white-medical-center-hillcrest',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '254-202-2000',
@@ -1322,6 +1411,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_2',
     name: 'Ascension Providence Hospital (Waco)',
+    website: 'https://healthcare.ascension.org/locations/texas/txpro/waco-ascension-providence-hospital',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '254-751-4000',
@@ -1336,6 +1426,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_3',
     name: 'Baylor University',
+    website: 'https://www.baylor.edu',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '254-710-1011',
@@ -1350,6 +1441,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_4',
     name: 'L3Harris Technologies (Waco)',
+    website: 'https://www.l3harris.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '254-867-3000',
@@ -1364,6 +1456,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_5',
     name: 'HEB Grocery (Waco Distribution)',
+    website: 'https://www.heb.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '254-756-7511',
@@ -1378,6 +1471,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_6',
     name: 'Brewer Science Inc.',
+    website: 'https://www.brewerscience.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '573-364-0300',
@@ -1392,6 +1486,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_j14_7',
     name: 'McLennan Community College',
+    website: 'https://www.mclennan.edu',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '254-299-8000',
@@ -1410,6 +1505,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_1',
     name: 'Brandt Engineering & Construction',
+    website: 'https://www.brandtcompanies.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-242-4900',
@@ -1424,6 +1520,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_2',
     name: 'G6 Hospitality (Motel 6 HQ)',
+    website: 'https://www.g6hospitality.com',
     contact: 'Contact via website',
     title: 'Executive Assistant',
     phone: '972-360-9000',
@@ -1438,6 +1535,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_3',
     name: 'Schneider Electric (Carrollton)',
+    website: 'https://www.se.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-323-6000',
@@ -1452,6 +1550,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_4',
     name: 'CyrusOne Data Centers',
+    website: 'https://www.cyrusone.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-350-0060',
@@ -1466,6 +1565,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_5',
     name: 'VRM Mortgage Services',
+    website: 'https://www.vrm.com',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '972-420-3800',
@@ -1480,6 +1580,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_6',
     name: 'BuzzBallz (Carrollton)',
+    website: 'https://www.buzzballz.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-242-6640',
@@ -1494,6 +1595,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_7',
     name: 'AER Manufacturing (Engine Components)',
+    website: 'https://www.aer-mfg.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-245-9900',
@@ -1508,6 +1610,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_8',
     name: 'Western Extrusions Corp.',
+    website: 'https://www.westernextrusions.com',
     contact: 'Contact via website',
     title: 'Operations Manager',
     phone: '972-245-7711',
@@ -1522,6 +1625,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t1_9',
     name: 'Sanmina Corporation (Carrollton)',
+    website: 'https://www.sanmina.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '972-539-6300',
@@ -1540,6 +1644,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t2_1',
     name: 'Benbrook Area Chamber of Commerce',
+    website: 'https://www.benbrookchamber.org',
     contact: 'Contact via website',
     title: 'Executive Director',
     phone: '817-249-4451',
@@ -1554,6 +1659,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t2_2',
     name: 'Fort Worth Country Day School',
+    website: 'https://www.fwcd.org',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-732-7718',
@@ -1568,6 +1674,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t2_3',
     name: 'Texas Wesleyan University (Fort Worth)',
+    website: 'https://www.txwes.edu',
     contact: 'Contact via website',
     title: 'Office Manager',
     phone: '817-531-4444',
@@ -1582,6 +1689,7 @@ const SEEDED_LEADS = [
   {
     id: 'seed_t2_4',
     name: 'Alcon (Fort Worth Manufacturing)',
+    website: 'https://www.alcon.com',
     contact: 'Contact via website',
     title: 'HR Director',
     phone: '817-293-0450',

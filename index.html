@@ -311,6 +311,10 @@
       </div>
     </div>
     <div class="form-row">
+      <label class="form-label">Website</label>
+      <input class="form-input" id="fWebsite" placeholder="https://company.com">
+    </div>
+    <div class="form-row">
       <label class="form-label">Notes</label>
       <textarea class="form-textarea" id="fNotes" placeholder="Any context about this lead…"></textarea>
     </div>
@@ -574,7 +578,10 @@ function openDetail(loc) {
           <div class="crm-item" onclick="openModal('${lead.id}')" style="border-radius:8px;margin-bottom:4px;">
             <div class="crm-item-top">
               <span class="crm-biz">${escH(lead.name)}</span>
-              <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                ${lead.website ? `<a href="${escH(lead.website)}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">🌐 Site</a>` : ''}
+                <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+              </div>
             </div>
             <div class="crm-meta">${escH(lead.contact||'No contact yet')} ${lead.notes ? '· '+escH(lead.notes.slice(0,40)) : ''}</div>
           </div>
@@ -625,7 +632,10 @@ function renderCRM() {
         <div class="crm-item" onclick="openModal('${lead.id}')">
           <div class="crm-item-top">
             <span class="crm-biz">${escH(lead.name)}</span>
-            <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              ${lead.website ? `<a href="${escH(lead.website)}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">🌐 Site</a>` : ''}
+              <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+            </div>
           </div>
           <div class="crm-meta">${locMap[lead.location]||''} · ${escH(lead.contact||'No contact')} ${lead.notes ? '· '+escH(lead.notes.slice(0,30))+'…' : ''}</div>
         </div>
@@ -652,6 +662,7 @@ function openModal(leadId, presetLocId) {
       document.getElementById('fContact').value = lead.contact || '';
       document.getElementById('fPhone').value = lead.phone || '';
       document.getElementById('fStatus').value = lead.status;
+      document.getElementById('fWebsite').value = lead.website || '';
       document.getElementById('fNotes').value = lead.notes || '';
       document.getElementById('fLocation').value = lead.location;
     }
@@ -661,6 +672,7 @@ function openModal(leadId, presetLocId) {
     document.getElementById('fContact').value = '';
     document.getElementById('fPhone').value = '';
     document.getElementById('fStatus').value = 'new';
+    document.getElementById('fWebsite').value = '';
     document.getElementById('fNotes').value = '';
   }
   document.getElementById('crmModal').classList.add('open');
@@ -682,6 +694,7 @@ function saveLead() {
         name, contact: document.getElementById('fContact').value,
         phone: document.getElementById('fPhone').value,
         status: document.getElementById('fStatus').value,
+        website: document.getElementById('fWebsite').value,
         notes: document.getElementById('fNotes').value,
         location: document.getElementById('fLocation').value,
         updatedAt: Date.now()
@@ -693,6 +706,7 @@ function saveLead() {
       name, contact: document.getElementById('fContact').value,
       phone: document.getElementById('fPhone').value,
       status: document.getElementById('fStatus').value,
+      website: document.getElementById('fWebsite').value,
       notes: document.getElementById('fNotes').value,
       location: document.getElementById('fLocation').value,
       brand: currentBrand,
