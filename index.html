@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAD Concepts — Catering Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --jakes-bg: #0f172a;
+    --jakes-accent: #f59e0b;
+    --jakes-accent2: #ef4444;
+    --ta-bg: #0d1f0d;
+    --ta-accent: #22c55e;
+    --ta-accent2: #f97316;
+    --bg: #0f172a;
+    --bg2: #1e293b;
+    --bg3: #273549;
+    --border: #334155;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --accent: #f59e0b;
+    --accent2: #ef4444;
+    --radius: 12px;
+  }
+  .brand-ta {
+    --accent: #22c55e;
+    --accent2: #f97316;
+    --bg: #0a1a0a;
+    --bg2: #132013;
+    --bg3: #1a2e1a;
+    --border: #2d4a2d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; transition: background 0.3s; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 60px;
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+  .header-logo .dot { color: var(--accent); }
+  .header-sub { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Brand switcher */
+  .brand-switcher { display: flex; gap: 4px; background: var(--bg3); border-radius: 8px; padding: 4px; border: 1px solid var(--border); }
+  .brand-btn {
+    padding: 6px 16px; border-radius: 6px; border: none; cursor: pointer;
+    font-size: 12px; font-weight: 600; transition: all 0.2s; background: transparent; color: var(--text2);
+  }
+  .brand-btn.active { background: var(--accent); color: #000; }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-stat { text-align: right; }
+  .header-stat .val { font-size: 18px; font-weight: 800; color: var(--accent); }
+  .header-stat .lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── LAYOUT ── */
+  .main { display: grid; grid-template-columns: 340px 1fr; grid-template-rows: 1fr; height: calc(100vh - 60px); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .sidebar-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .s-tab {
+    flex: 1; padding: 12px 8px; text-align: center;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+    cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .s-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .sidebar-content { flex: 1; overflow-y: auto; }
+  .sidebar-content::-webkit-scrollbar { width: 4px; }
+  .sidebar-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Location list */
+  .loc-item {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.1s; display: flex; align-items: center; gap: 10px;
+  }
+  .loc-item:hover { background: var(--bg3); }
+  .loc-item.active { background: rgba(245,158,11,0.08); border-left: 3px solid var(--accent); }
+  .brand-ta .loc-item.active { background: rgba(34,197,94,0.08); border-left-color: var(--accent); }
+  .loc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .loc-dot.jakes { background: #f59e0b; }
+  .loc-dot.ta { background: #22c55e; }
+  .loc-dot.soon { background: #64748b; }
+  .loc-name { font-weight: 600; font-size: 13px; }
+  .loc-addr { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .loc-badge { margin-left: auto; font-size: 9px; padding: 2px 6px; border-radius: 99px; background: var(--bg3); color: var(--text3); font-weight: 600; text-transform: uppercase; flex-shrink: 0; }
+  .loc-badge.soon { background: rgba(100,116,139,0.2); }
+
+  /* CRM list */
+  .crm-toolbar { padding: 10px 14px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .crm-search { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--text); font-size: 12px; outline: none; }
+  .crm-search::placeholder { color: var(--text3); }
+  .crm-filter { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; color: var(--text2); font-size: 11px; cursor: pointer; white-space: nowrap; }
+  .crm-filter.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  .crm-item {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .crm-item:hover { background: var(--bg3); }
+  .crm-item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .crm-biz { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+  .crm-status { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
+  .status-new      { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .status-contacted{ background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .status-meeting  { background: rgba(16,185,129,0.15); color: #34d399; }
+  .status-customer { background: rgba(34,197,94,0.2);   color: #4ade80; }
+  .status-pass     { background: rgba(100,116,139,0.15); color: #94a3b8; }
+  .crm-meta { font-size: 11px; color: var(--text3); }
+
+  /* ── MAP PANEL ── */
+  .map-panel { display: flex; flex-direction: column; overflow: hidden; }
+  #map { flex: 1; z-index: 1; }
+
+  /* ── DETAIL DRAWER ── */
+  .detail-drawer {
+    height: 0; overflow: hidden; transition: height 0.3s ease;
+    background: var(--bg2); border-top: 1px solid var(--border);
+  }
+  .detail-drawer.open { height: 340px; }
+  .detail-inner { padding: 20px 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; height: 100%; overflow-y: auto; }
+  .detail-inner::-webkit-scrollbar { width: 4px; }
+  .detail-inner::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Demo card */
+  .demo-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .demo-card h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 12px; }
+
+  .demo-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .demo-label { font-size: 12px; color: var(--text2); }
+  .demo-val { font-size: 12px; font-weight: 600; color: var(--text); }
+  .demo-val.green { color: #34d399; }
+  .demo-val.yellow { color: #fbbf24; }
+
+  /* Nearby biz list */
+  .biz-list { display: flex; flex-direction: column; gap: 6px; }
+  .biz-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .biz-card:hover { border-color: var(--accent); }
+  .biz-name { font-size: 12px; font-weight: 600; }
+  .biz-type { font-size: 11px; color: var(--text3); }
+  .biz-add-btn {
+    font-size: 10px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border);
+    background: transparent; color: var(--text2); cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .biz-add-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* ── CRM MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+    padding: 28px; width: 460px; max-width: 95vw;
+  }
+  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+  .form-row { margin-bottom: 14px; }
+  .form-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 5px; display: block; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 13px;
+    outline: none; font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-textarea { resize: vertical; min-height: 70px; }
+  .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+  .btn-cancel { padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-size: 13px; }
+  .btn-save { padding: 8px 18px; border-radius: 8px; border: none; background: var(--accent); color: #000; cursor: pointer; font-size: 13px; font-weight: 700; }
+
+  /* ── STATS BAR ── */
+  .stats-strip { display: flex; gap: 0; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .strip-stat { flex: 1; padding: 10px 16px; border-right: 1px solid var(--border); }
+  .strip-stat:last-child { border-right: none; }
+  .strip-val { font-size: 20px; font-weight: 800; color: var(--accent); }
+  .strip-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+
+  /* Leaflet overrides */
+  .leaflet-popup-content-wrapper { background: #1e293b; border: 1px solid #334155; color: #f1f5f9; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  .leaflet-popup-tip { background: #1e293b; }
+  .leaflet-popup-content { margin: 12px 16px; font-family: 'Inter', sans-serif; font-size: 13px; }
+  .popup-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .popup-addr { color: #94a3b8; font-size: 12px; }
+
+  /* Scrollbar global */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .empty-state { padding: 32px 16px; text-align: center; color: var(--text3); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div>
+      <div class="header-logo">MAD<span class="dot">·</span>Concepts <span style="font-size:13px;font-weight:400;color:var(--text3);">Catering Intel</span></div>
+    </div>
+    <div class="brand-switcher">
+      <button class="brand-btn active" id="btnJakes" onclick="setBrand('jakes')">🍔 Jake's</button>
+      <button class="brand-btn" id="btnTA" onclick="setBrand('ta')">🌮 T&A</button>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-stat"><div class="val" id="hStatLocs">—</div><div class="lbl">Locations</div></div>
+    <div class="header-stat" style="margin-left:16px;"><div class="val" id="hStatLeads">—</div><div class="lbl">CRM Leads</div></div>
+    <div class="header-stat" style="margin-left:16px;"><div class="val" id="hStatCustomers">—</div><div class="lbl">Customers</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-tabs">
+      <div class="s-tab active" id="tabLoc" onclick="showTab('locations')">📍 Locations</div>
+      <div class="s-tab" id="tabCRM" onclick="showTab('crm')">👥 CRM</div>
+    </div>
+
+    <!-- Locations tab -->
+    <div id="panelLocations" class="sidebar-content">
+      <div id="locList"></div>
+    </div>
+
+    <!-- CRM tab -->
+    <div id="panelCRM" class="sidebar-content" style="display:none; flex-direction:column;">
+      <div class="crm-toolbar">
+        <input class="crm-search" id="crmSearch" placeholder="Search businesses…" oninput="renderCRM()">
+        <button class="crm-filter active" id="fAll" onclick="setCRMFilter('all')">All</button>
+        <button class="crm-filter" id="fNew" onclick="setCRMFilter('new')">New</button>
+        <button class="crm-filter" id="fActive" onclick="setCRMFilter('active')">Active</button>
+        <button class="crm-filter" id="fCust" onclick="setCRMFilter('customer')">✅</button>
+      </div>
+      <div id="crmList" style="overflow-y:auto;flex:1;"></div>
+    </div>
+  </div>
+
+  <!-- MAP + DETAIL -->
+  <div class="map-panel">
+    <div class="stats-strip">
+      <div class="strip-stat"><div class="strip-val" id="ss1">—</div><div class="strip-lbl">Locations Active</div></div>
+      <div class="strip-stat"><div class="strip-val" id="ss2">—</div><div class="strip-lbl">Nearby Businesses</div></div>
+      <div class="strip-stat"><div class="strip-val" id="ss3">—</div><div class="strip-lbl">CRM Pipeline</div></div>
+      <div class="strip-stat"><div class="strip-val" id="ss4">—</div><div class="strip-lbl">Customers Won</div></div>
+    </div>
+    <div id="map"></div>
+    <div class="detail-drawer" id="detailDrawer">
+      <div class="detail-inner" id="detailInner"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CRM MODAL -->
+<div class="modal-overlay" id="crmModal">
+  <div class="modal">
+    <h3 id="modalTitle">Add Lead</h3>
+    <div class="form-row">
+      <label class="form-label">Business Name</label>
+      <input class="form-input" id="fName" placeholder="e.g. Acme Corp">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-row">
+        <label class="form-label">Contact Name</label>
+        <input class="form-input" id="fContact" placeholder="Office Manager">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Phone / Email</label>
+        <input class="form-input" id="fPhone" placeholder="info@company.com">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-row">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="fStatus">
+          <option value="new">🔵 New</option>
+          <option value="contacted">🟡 Contacted</option>
+          <option value="meeting">🟢 Meeting Scheduled</option>
+          <option value="customer">✅ Customer</option>
+          <option value="pass">⛔ Pass</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Nearest Location</label>
+        <select class="form-select" id="fLocation"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Notes</label>
+      <textarea class="form-textarea" id="fNotes" placeholder="Any context about this lead…"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveLead()">Save Lead</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const BRANDS = {
+  jakes: {
+    name: "Jake's Burgers & Beer",
+    short: "Jake's",
+    color: "#f59e0b",
+    mapTile: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    locations: [
+      { id:'j1', name:'Addison',         addr:'14920 Midway Rd, Addison TX 75001',             lat:32.9594, lng:-96.8351, status:'active' },
+      { id:'j2', name:'Aledo',           addr:'601 FM 1187, Aledo TX 76008',                   lat:32.6957, lng:-97.6045, status:'active' },
+      { id:'j3', name:'Benbrook',        addr:'9300 Benbrook Blvd, Benbrook TX 76126',          lat:32.6812, lng:-97.4626, status:'soon'   },
+      { id:'j4', name:'Energy Square',   addr:'4925 Greenville Ave, Dallas TX 75206',           lat:32.8482, lng:-96.7849, status:'active' },
+      { id:'j5', name:'Flower Mound',    addr:'1141 Flower Mound Rd, Flower Mound TX 75028',    lat:33.0145, lng:-97.1068, status:'active' },
+      { id:'j6', name:'Frisco Square',   addr:'6195 W. Main St, Frisco TX 75034',               lat:33.1551, lng:-96.8236, status:'active' },
+      { id:'j7', name:'Grand Prairie',   addr:'2860 State Hwy 161, Grand Prairie TX 75052',     lat:32.7459, lng:-97.0153, status:'active' },
+      { id:'j8', name:'Grapevine',       addr:'520 S Main St, Grapevine TX 76051',              lat:32.9343, lng:-97.0781, status:'active' },
+      { id:'j9', name:'Lake Highlands',  addr:'6606 Skillman St, Dallas TX 75231',              lat:32.8721, lng:-96.7338, status:'active' },
+      { id:'j10',name:'Mansfield',       addr:'3540 E Broad St, Mansfield TX 76063',             lat:32.5632, lng:-97.1209, status:'active' },
+      { id:'j11',name:'Marsh Lane',      addr:'10031 Marsh Ln, Dallas TX 75229',                lat:32.8975, lng:-96.8706, status:'active' },
+      { id:'j12',name:'Sachse',          addr:'7910 S State Hwy 78, Sachse TX 75048',            lat:32.9713, lng:-96.5893, status:'active' },
+      { id:'j13',name:'Sundance Square', addr:'515 Main St, Fort Worth TX 76102',               lat:32.7555, lng:-97.3308, status:'active' },
+      { id:'j14',name:'Waco',            addr:'1500 Interstate 35 N, Waco TX 76706',             lat:31.5687, lng:-97.1441, status:'active' },
+    ]
+  },
+  ta: {
+    name: "Tacos & Avocados",
+    short: "T&A",
+    color: "#22c55e",
+    mapTile: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    locations: [
+      { id:'t1', name:'Carrollton (Downtown)', addr:'1309 S Broadway St, Carrollton TX 75006', lat:32.9537, lng:-96.9095, status:'active' },
+      { id:'t2', name:'Benbrook',              addr:'SW Corner Benbrook Blvd & Westpark Dr, Benbrook TX 76126', lat:32.6760, lng:-97.4680, status:'soon' },
+    ]
+  }
+};
+
+// Nearby businesses seeded per location (10-15 each)
+const NEARBY = {
+  j1:  [ // Addison
+    { name:'AECOM',              type:'Engineering Firm',    employees:'200+' },
+    { name:'Fidelity Investments',type:'Financial Services', employees:'500+' },
+    { name:'Nationstar Mortgage', type:'Financial Services', employees:'300+' },
+    { name:'Match Group HQ',      type:'Tech Company',       employees:'1000+'},
+    { name:'Addison Airport FBO', type:'Aviation/Logistics', employees:'50+'  },
+    { name:'Cinemark HQ',         type:'Entertainment',      employees:'200+' },
+    { name:'Pizza Hut Corp',      type:'Corporate Office',   employees:'400+' },
+    { name:'Concentra Medical',   type:'Healthcare',         employees:'100+' },
+    { name:'LA Fitness Corporate',type:'Health & Fitness',   employees:'50+'  },
+    { name:'Stonebriar of Addison',type:'Senior Living',     employees:'75+'  },
+  ],
+  j4:  [ // Energy Square / Greenville
+    { name:'Baylor Scott & White', type:'Healthcare',         employees:'500+' },
+    { name:'Capital One (Greenville)',type:'Financial Services',employees:'200+'},
+    { name:'Salesforce Dallas',    type:'Tech Company',       employees:'150+' },
+    { name:'Frost Bank Dallas',    type:'Banking',            employees:'100+' },
+    { name:'UNT System Office',    type:'Education',          employees:'200+' },
+    { name:'Lennox International', type:'Manufacturing',      employees:'300+' },
+    { name:'Toyota Connected',     type:'Tech/Auto',          employees:'150+' },
+    { name:'Keurig Dr Pepper HQ',  type:'Consumer Goods',     employees:'400+' },
+    { name:'Weir Oil & Gas',       type:'Energy',             employees:'100+' },
+    { name:'Caliber Collision HQ', type:'Corporate Office',   employees:'200+' },
+  ],
+  j6:  [ // Frisco Square
+    { name:'Keurig Dr Pepper Frisco',type:'Corporate',        employees:'500+' },
+    { name:'Hall Park Office',       type:'Mixed-Use Office', employees:'800+' },
+    { name:'Toyota NA HQ',           type:'Automotive',       employees:'2000+'},
+    { name:'PGA of America HQ',      type:'Sports Org',       employees:'200+' },
+    { name:'Topgolf HQ',             type:'Entertainment',    employees:'300+' },
+    { name:'Liberty Mutual Frisco',  type:'Insurance',        employees:'200+' },
+    { name:'Stonebriar Centre Corp', type:'Retail/Office',    employees:'150+' },
+    { name:'Compass Group',          type:'Food Services',    employees:'100+' },
+    { name:'Frisco ISD Admin',       type:'Education',        employees:'400+' },
+    { name:'NCR Atleos',             type:'FinTech',          employees:'200+' },
+  ],
+  j13: [ // Sundance Square / Fort Worth
+    { name:'American Airlines HQ',  type:'Aviation',          employees:'5000+'},
+    { name:'TPG Capital',           type:'Private Equity',    employees:'200+' },
+    { name:'BNSF Railway HQ',       type:'Transportation',    employees:'1000+'},
+    { name:'Charles Schwab Ft Worth',type:'Financial Services',employees:'500+'},
+    { name:'Pier 1 Imports (legacy)',type:'Corporate Office', employees:'150+' },
+    { name:'Alcon Laboratories',    type:'Healthcare',        employees:'2000+'},
+    { name:'XTO Energy HQ',         type:'Energy',            employees:'500+' },
+    { name:'RadioShack Corp',       type:'Retail/Office',     employees:'100+' },
+    { name:'Fort Worth ISD Admin',  type:'Education',         employees:'300+' },
+    { name:'Cook Children\'s Medical',type:'Healthcare',      employees:'1000+'},
+  ],
+  t1:  [ // Carrollton
+    { name:'Fujitsu Network Comm.',  type:'Tech Company',      employees:'300+' },
+    { name:'Wolters Kluwer Carrollton',type:'Software',        employees:'200+' },
+    { name:'Carrollton Fire Dept',   type:'Government',        employees:'150+' },
+    { name:'Carrollton City Hall',   type:'Government',        employees:'200+' },
+    { name:'FlexSteel Industries',   type:'Manufacturing',     employees:'100+' },
+    { name:'Sabre Corporation',      type:'Tech/Travel',       employees:'500+' },
+    { name:'Concentra HQ',          type:'Healthcare',         employees:'300+' },
+    { name:'Carrollton-FB ISD',      type:'Education',         employees:'400+' },
+    { name:'Dr Pepper Ballpark area',type:'Sports/Events',     employees:'200+' },
+    { name:'McLeodUSA (Carrollton)', type:'Telecom',           employees:'150+' },
+  ],
+};
+
+// Default nearby for locations without specific data
+const DEFAULT_NEARBY = [
+  { name:'Local Law Firm',         type:'Legal Services',    employees:'20+' },
+  { name:'Regional Medical Group', type:'Healthcare',        employees:'50+' },
+  { name:'Staffing Agency',        type:'HR Services',       employees:'30+' },
+  { name:'CPA Firm',               type:'Accounting',        employees:'15+' },
+  { name:'Tech Startup',           type:'Technology',        employees:'40+' },
+  { name:'Insurance Office',       type:'Insurance',         employees:'25+' },
+  { name:'Real Estate Brokerage',  type:'Real Estate',       employees:'30+' },
+  { name:'Credit Union',           type:'Financial Services',employees:'60+' },
+];
+
+// Demographics data per location
+const DEMOGRAPHICS = {
+  j1:  { medianIncome:'$82,000', officeWorkers:'~12,400', avgCompanySize:'45', topIndustry:'Finance & Tech',    lunchSpend:'$18–28/person' },
+  j2:  { medianIncome:'$74,000', officeWorkers:'~3,200',  avgCompanySize:'22', topIndustry:'Construction',     lunchSpend:'$14–22/person' },
+  j3:  { medianIncome:'$71,000', officeWorkers:'~4,100',  avgCompanySize:'28', topIndustry:'Healthcare',       lunchSpend:'$14–20/person' },
+  j4:  { medianIncome:'$91,000', officeWorkers:'~18,500', avgCompanySize:'85', topIndustry:'Tech & Healthcare',lunchSpend:'$20–32/person' },
+  j5:  { medianIncome:'$112,000',officeWorkers:'~8,900',  avgCompanySize:'38', topIndustry:'Finance & Legal',  lunchSpend:'$18–28/person' },
+  j6:  { medianIncome:'$118,000',officeWorkers:'~24,000', avgCompanySize:'120',topIndustry:'Corporate HQs',   lunchSpend:'$22–35/person' },
+  j7:  { medianIncome:'$68,000', officeWorkers:'~11,200', avgCompanySize:'52', topIndustry:'Distribution',    lunchSpend:'$14–20/person' },
+  j8:  { medianIncome:'$88,000', officeWorkers:'~9,800',  avgCompanySize:'44', topIndustry:'Tourism & Retail', lunchSpend:'$16–24/person' },
+  j9:  { medianIncome:'$79,000', officeWorkers:'~7,400',  avgCompanySize:'31', topIndustry:'Healthcare',       lunchSpend:'$15–22/person' },
+  j10: { medianIncome:'$82,000', officeWorkers:'~6,100',  avgCompanySize:'29', topIndustry:'Manufacturing',    lunchSpend:'$14–20/person' },
+  j11: { medianIncome:'$75,000', officeWorkers:'~10,300', avgCompanySize:'42', topIndustry:'Finance',          lunchSpend:'$16–24/person' },
+  j12: { medianIncome:'$95,000', officeWorkers:'~5,800',  avgCompanySize:'33', topIndustry:'Healthcare',       lunchSpend:'$16–24/person' },
+  j13: { medianIncome:'$61,000', officeWorkers:'~28,000', avgCompanySize:'200','topIndustry':'Aviation & Finance',lunchSpend:'$16–28/person' },
+  j14: { medianIncome:'$52,000', officeWorkers:'~9,200',  avgCompanySize:'55', topIndustry:'Healthcare & Education',lunchSpend:'$12–18/person'},
+  t1:  { medianIncome:'$72,000', officeWorkers:'~14,000', avgCompanySize:'65', topIndustry:'Tech & Telecom',   lunchSpend:'$15–22/person' },
+  t2:  { medianIncome:'$71,000', officeWorkers:'~4,100',  avgCompanySize:'28', topIndustry:'Healthcare',       lunchSpend:'$14–20/person' },
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let currentBrand = 'jakes';
+let selectedLoc = null;
+let crmFilter = 'all';
+let editingLeadId = null;
+let map = null;
+let markers = {};
+
+// CRM storage
+function getCRM() {
+  try { return JSON.parse(localStorage.getItem('mad_crm') || '[]'); } catch { return []; }
+}
+function saveCRM(data) { localStorage.setItem('mad_crm', JSON.stringify(data)); }
+
+// ═══════════════════════════════════════════
+// BRAND SWITCH
+// ═══════════════════════════════════════════
+function setBrand(brand) {
+  currentBrand = brand;
+  selectedLoc = null;
+
+  // UI
+  document.getElementById('btnJakes').classList.toggle('active', brand === 'jakes');
+  document.getElementById('btnTA').classList.toggle('active', brand === 'ta');
+  document.body.classList.toggle('brand-ta', brand === 'ta');
+
+  // accent CSS var
+  const accent = brand === 'jakes' ? '#f59e0b' : '#22c55e';
+  document.documentElement.style.setProperty('--accent', accent);
+
+  closeDetail();
+  renderLocList();
+  renderMap();
+  updateStats();
+}
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+function showTab(tab) {
+  document.getElementById('tabLoc').classList.toggle('active', tab === 'locations');
+  document.getElementById('tabCRM').classList.toggle('active', tab === 'crm');
+  document.getElementById('panelLocations').style.display = tab === 'locations' ? 'block' : 'none';
+  document.getElementById('panelCRM').style.display = tab === 'crm' ? 'flex' : 'none';
+  if (tab === 'crm') renderCRM();
+}
+
+// ═══════════════════════════════════════════
+// LOCATIONS LIST
+// ═══════════════════════════════════════════
+function renderLocList() {
+  const locs = BRANDS[currentBrand].locations;
+  const html = locs.map(loc => `
+    <div class="loc-item ${selectedLoc?.id === loc.id ? 'active':''} ${loc.status==='soon'?'opacity-50':''}"
+         onclick="selectLoc('${loc.id}')">
+      <div class="loc-dot ${currentBrand === 'jakes' ? 'jakes':'ta'} ${loc.status==='soon'?'soon':''}"></div>
+      <div>
+        <div class="loc-name">${loc.name}</div>
+        <div class="loc-addr">${loc.addr.split(',').slice(1).join(',').trim()}</div>
+      </div>
+      ${loc.status==='soon' ? '<span class="loc-badge soon">Soon</span>' : ''}
+    </div>
+  `).join('');
+  document.getElementById('locList').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+// MAP
+// ═══════════════════════════════════════════
+function renderMap() {
+  const locs = BRANDS[currentBrand].locations;
+  const brand = BRANDS[currentBrand];
+
+  if (!map) {
+    map = L.map('map', { zoomControl: true }).setView([32.9, -97.0], 9);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO', subdomains: 'abcd', maxZoom: 19
+    }).addTo(map);
+  }
+
+  // Remove old markers
+  Object.values(markers).forEach(m => map.removeLayer(m));
+  markers = {};
+
+  locs.forEach(loc => {
+    const color = loc.status === 'soon' ? '#64748b' : brand.color;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid ${loc.status==='soon'?'#475569':'#fff'};box-shadow:0 0 0 3px ${color}33;cursor:pointer;"></div>`,
+      iconSize: [14, 14], iconAnchor: [7, 7]
+    });
+    const marker = L.marker([loc.lat, loc.lng], { icon })
+      .addTo(map)
+      .bindPopup(`<div class="popup-name">${brand.short} — ${loc.name}</div><div class="popup-addr">${loc.addr}</div>${loc.status==='soon'?'<div style="color:#f59e0b;font-size:11px;margin-top:4px;">🔜 Coming Soon</div>':''}`)
+      .on('click', () => selectLoc(loc.id));
+    markers[loc.id] = marker;
+  });
+
+  // Fit bounds
+  if (locs.length > 1) {
+    const bounds = L.latLngBounds(locs.map(l => [l.lat, l.lng]));
+    map.fitBounds(bounds, { padding: [40, 40] });
+  }
+}
+
+// ═══════════════════════════════════════════
+// SELECT LOCATION
+// ═══════════════════════════════════════════
+function selectLoc(id) {
+  const locs = BRANDS[currentBrand].locations;
+  selectedLoc = locs.find(l => l.id === id);
+  if (!selectedLoc) return;
+
+  renderLocList();
+  openDetail(selectedLoc);
+
+  // Pan map
+  if (markers[id]) {
+    map.setView([selectedLoc.lat, selectedLoc.lng], 13, { animate: true });
+    markers[id].openPopup();
+  }
+}
+
+// ═══════════════════════════════════════════
+// DETAIL DRAWER
+// ═══════════════════════════════════════════
+function openDetail(loc) {
+  const demo = DEMOGRAPHICS[loc.id] || DEMOGRAPHICS['j1'];
+  const nearby = NEARBY[loc.id] || DEFAULT_NEARBY;
+  const crm = getCRM().filter(l => l.location === loc.id);
+  const brand = BRANDS[currentBrand];
+
+  document.getElementById('detailInner').innerHTML = `
+    <!-- Demographics -->
+    <div class="demo-card">
+      <h4>📊 Area Demographics — ${loc.name}</h4>
+      <div class="demo-row"><span class="demo-label">Median Household Income</span><span class="demo-val green">${demo.medianIncome}</span></div>
+      <div class="demo-row"><span class="demo-label">Office Workers (3mi radius)</span><span class="demo-val">${demo.officeWorkers}</span></div>
+      <div class="demo-row"><span class="demo-label">Avg. Company Size</span><span class="demo-val">${demo.avgCompanySize} employees</span></div>
+      <div class="demo-row"><span class="demo-label">Top Industry</span><span class="demo-val">${demo.topIndustry}</span></div>
+      <div class="demo-row"><span class="demo-label">Est. Lunch Spend/Person</span><span class="demo-val yellow">${demo.lunchSpend}</span></div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div class="demo-label" style="color:var(--text3);font-size:10px;margin-bottom:6px;">CATERING OPPORTUNITY SCORE</div>
+        <div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden;">
+          <div style="height:100%;border-radius:6px;background:var(--accent);width:${Math.min(95,parseInt(demo.officeWorkers)/400)}%;transition:width 0.5s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nearby Businesses -->
+    <div class="demo-card">
+      <h4>🏢 Nearby Businesses <button onclick="openModal(null,'${loc.id}')" style="float:right;background:var(--accent);color:#000;border:none;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer;">+ Add Lead</button></h4>
+      <div class="biz-list">
+        ${nearby.map(b => `
+          <div class="biz-card">
+            <div>
+              <div class="biz-name">${b.name}</div>
+              <div class="biz-type">${b.type} · ${b.employees} employees</div>
+            </div>
+            <button class="biz-add-btn" onclick="quickAddLead('${escQ(b.name)}','${escQ(b.type)}','${loc.id}')">+ CRM</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- CRM for this location -->
+    <div class="demo-card">
+      <h4>👥 CRM — ${loc.name} <span style="color:var(--accent)">(${crm.length})</span></h4>
+      ${crm.length === 0 ? '<div class="empty-state">No leads yet.<br>Add businesses from the list →</div>' :
+        crm.map(lead => `
+          <div class="crm-item" onclick="openModal('${lead.id}')" style="border-radius:8px;margin-bottom:4px;">
+            <div class="crm-item-top">
+              <span class="crm-biz">${escH(lead.name)}</span>
+              <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+            </div>
+            <div class="crm-meta">${escH(lead.contact||'No contact yet')} ${lead.notes ? '· '+escH(lead.notes.slice(0,40)) : ''}</div>
+          </div>
+        `).join('')
+      }
+      <button onclick="openModal(null,'${loc.id}')" style="width:100%;margin-top:8px;padding:8px;background:transparent;border:1px dashed var(--border);border-radius:8px;color:var(--text3);cursor:pointer;font-size:12px;">+ Add Lead</button>
+    </div>
+  `;
+
+  document.getElementById('detailDrawer').classList.add('open');
+  // Force map to recalculate size
+  setTimeout(() => map && map.invalidateSize(), 320);
+}
+
+function closeDetail() {
+  document.getElementById('detailDrawer').classList.remove('open');
+  setTimeout(() => map && map.invalidateSize(), 320);
+}
+
+// ═══════════════════════════════════════════
+// CRM PANEL
+// ═══════════════════════════════════════════
+function setCRMFilter(f) {
+  crmFilter = f;
+  ['fAll','fNew','fActive','fCust'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+  document.getElementById(f==='all'?'fAll':f==='new'?'fNew':f==='active'?'fActive':'fCust')?.classList.add('active');
+  renderCRM();
+}
+
+function renderCRM() {
+  const all = getCRM();
+  const search = document.getElementById('crmSearch')?.value.toLowerCase() || '';
+  const brand = BRANDS[currentBrand];
+  const locIds = brand.locations.map(l => l.id);
+
+  let leads = all.filter(l => locIds.includes(l.location));
+  if (search) leads = leads.filter(l => l.name.toLowerCase().includes(search) || (l.contact||'').toLowerCase().includes(search));
+  if (crmFilter === 'new') leads = leads.filter(l => l.status === 'new');
+  if (crmFilter === 'active') leads = leads.filter(l => ['contacted','meeting'].includes(l.status));
+  if (crmFilter === 'customer') leads = leads.filter(l => l.status === 'customer');
+
+  const locMap = {};
+  brand.locations.forEach(l => locMap[l.id] = l.name);
+
+  document.getElementById('crmList').innerHTML = leads.length === 0
+    ? '<div class="empty-state">No leads found.</div>'
+    : leads.map(lead => `
+        <div class="crm-item" onclick="openModal('${lead.id}')">
+          <div class="crm-item-top">
+            <span class="crm-biz">${escH(lead.name)}</span>
+            <span class="crm-status status-${lead.status}">${statusLabel(lead.status)}</span>
+          </div>
+          <div class="crm-meta">${locMap[lead.location]||''} · ${escH(lead.contact||'No contact')} ${lead.notes ? '· '+escH(lead.notes.slice(0,30))+'…' : ''}</div>
+        </div>
+      `).join('');
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(leadId, presetLocId) {
+  editingLeadId = leadId;
+  const locs = BRANDS[currentBrand].locations;
+
+  // Populate location select
+  document.getElementById('fLocation').innerHTML = locs.map(l =>
+    `<option value="${l.id}" ${l.id === (presetLocId||selectedLoc?.id) ? 'selected':''}>${l.name}</option>`
+  ).join('');
+
+  if (leadId) {
+    const lead = getCRM().find(l => l.id === leadId);
+    if (lead) {
+      document.getElementById('modalTitle').textContent = 'Edit Lead';
+      document.getElementById('fName').value = lead.name;
+      document.getElementById('fContact').value = lead.contact || '';
+      document.getElementById('fPhone').value = lead.phone || '';
+      document.getElementById('fStatus').value = lead.status;
+      document.getElementById('fNotes').value = lead.notes || '';
+      document.getElementById('fLocation').value = lead.location;
+    }
+  } else {
+    document.getElementById('modalTitle').textContent = 'Add Lead';
+    document.getElementById('fName').value = '';
+    document.getElementById('fContact').value = '';
+    document.getElementById('fPhone').value = '';
+    document.getElementById('fStatus').value = 'new';
+    document.getElementById('fNotes').value = '';
+  }
+  document.getElementById('crmModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('crmModal').classList.remove('open');
+  editingLeadId = null;
+}
+
+function saveLead() {
+  const name = document.getElementById('fName').value.trim();
+  if (!name) return;
+  const crm = getCRM();
+  if (editingLeadId) {
+    const idx = crm.findIndex(l => l.id === editingLeadId);
+    if (idx >= 0) {
+      crm[idx] = { ...crm[idx],
+        name, contact: document.getElementById('fContact').value,
+        phone: document.getElementById('fPhone').value,
+        status: document.getElementById('fStatus').value,
+        notes: document.getElementById('fNotes').value,
+        location: document.getElementById('fLocation').value,
+        updatedAt: Date.now()
+      };
+    }
+  } else {
+    crm.push({
+      id: 'l' + Date.now(),
+      name, contact: document.getElementById('fContact').value,
+      phone: document.getElementById('fPhone').value,
+      status: document.getElementById('fStatus').value,
+      notes: document.getElementById('fNotes').value,
+      location: document.getElementById('fLocation').value,
+      brand: currentBrand,
+      createdAt: Date.now(), updatedAt: Date.now()
+    });
+  }
+  saveCRM(crm);
+  closeModal();
+  renderCRM();
+  updateStats();
+  if (selectedLoc) openDetail(selectedLoc);
+}
+
+function quickAddLead(name, type, locId) {
+  const crm = getCRM();
+  // Don't duplicate
+  if (crm.find(l => l.name === name && l.location === locId)) {
+    openModal(crm.find(l => l.name === name && l.location === locId).id);
+    return;
+  }
+  crm.push({
+    id: 'l' + Date.now(),
+    name, contact: '', phone: '', status: 'new',
+    notes: type, location: locId, brand: currentBrand,
+    createdAt: Date.now(), updatedAt: Date.now()
+  });
+  saveCRM(crm);
+  updateStats();
+  if (selectedLoc) openDetail(selectedLoc);
+  renderCRM();
+}
+
+// ═══════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════
+function updateStats() {
+  const brand = BRANDS[currentBrand];
+  const locs = brand.locations;
+  const activeLocs = locs.filter(l => l.status === 'active').length;
+  const locIds = locs.map(l => l.id);
+  const crm = getCRM().filter(l => locIds.includes(l.location));
+  const customers = crm.filter(l => l.status === 'customer').length;
+  const nearbyTotal = locIds.reduce((sum, id) => sum + (NEARBY[id] || DEFAULT_NEARBY).length, 0);
+
+  document.getElementById('hStatLocs').textContent = activeLocs;
+  document.getElementById('hStatLeads').textContent = crm.length;
+  document.getElementById('hStatCustomers').textContent = customers;
+  document.getElementById('ss1').textContent = activeLocs;
+  document.getElementById('ss2').textContent = nearbyTotal + '+';
+  document.getElementById('ss3').textContent = crm.length;
+  document.getElementById('ss4').textContent = customers;
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function statusLabel(s) {
+  return { new:'New', contacted:'Contacted', meeting:'Meeting', customer:'Customer', pass:'Pass' }[s] || s;
+}
+function escH(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escQ(str) {
+  return String(str||'').replace(/'/g,"\\'").replace(/\n/g,' ');
+}
+
+// Close modal on overlay click
+document.getElementById('crmModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderLocList();
+  renderMap();
+  updateStats();
+});
+</script>
+</body>
+</html>
