@@ -682,9 +682,9 @@ function selectLoc(id) {
     markers[id].openPopup();
   }
 
-  // On mobile: switch to map view to show the detail drawer
+  // On mobile: switch to map view to show the detail drawer (pass flag to NOT reset)
   if (window.innerWidth <= 767) {
-    setTimeout(() => mobileNav('map'), 50);
+    setTimeout(() => mobileNav('map', true), 50);
   }
 }
 
@@ -971,7 +971,7 @@ document.getElementById('crmModal').addEventListener('click', function(e) {
 // MOBILE NAV
 // ═══════════════════════════════════════════
 let mobileView = 'map';
-function mobileNav(view) {
+function mobileNav(view, fromLocSelect) {
   if (window.innerWidth > 767) return;
   mobileView = view;
   const sidebar = document.querySelector('.sidebar');
@@ -987,8 +987,8 @@ function mobileNav(view) {
     sidebar.classList.remove('mobile-visible');
     mapPanel.classList.remove('mobile-hidden');
     document.getElementById('mnavMap')?.classList.add('active');
-    // If a location is selected, close the drawer and zoom back out
-    if (selectedLoc) {
+    // Only reset to overview if user tapped Map button directly (not after selecting a location)
+    if (!fromLocSelect && selectedLoc) {
       resetToAll();
     }
     setTimeout(() => map && map.invalidateSize(), 100);
