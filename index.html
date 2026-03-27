@@ -599,6 +599,15 @@ function showTab(tab) {
 // ═══════════════════════════════════════════
 function renderLocList() {
   const locs = BRANDS[currentBrand].locations;
+  const allBtn = `
+    <div class="loc-item ${!selectedLoc ? 'active' : ''}" onclick="resetToAll()" style="border-bottom:2px solid var(--border);">
+      <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--accent);"></div>
+      <div>
+        <div class="loc-name">🗺️ All Locations</div>
+        <div class="loc-addr">${locs.length} locations · Full map view</div>
+      </div>
+    </div>
+  `;
   const html = locs.map(loc => `
     <div class="loc-item ${selectedLoc?.id === loc.id ? 'active':''} ${loc.status==='soon'?'opacity-50':''}"
          onclick="selectLoc('${loc.id}')">
@@ -610,7 +619,7 @@ function renderLocList() {
       ${loc.status==='soon' ? '<span class="loc-badge soon">Soon</span>' : ''}
     </div>
   `).join('');
-  document.getElementById('locList').innerHTML = html;
+  document.getElementById('locList').innerHTML = allBtn + html;
 }
 
 // ═══════════════════════════════════════════
