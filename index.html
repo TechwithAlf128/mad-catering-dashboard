@@ -978,6 +978,10 @@ function mobileNav(view) {
     sidebar.classList.remove('mobile-visible');
     mapPanel.classList.remove('mobile-hidden');
     document.getElementById('mnavMap')?.classList.add('active');
+    // If a location is selected, close the drawer and zoom back out
+    if (selectedLoc) {
+      resetToAll();
+    }
     setTimeout(() => map && map.invalidateSize(), 100);
   } else if (view === 'locations') {
     sidebar.classList.add('mobile-visible');
