@@ -384,7 +384,10 @@
   <!-- MAP + DETAIL -->
   <div class="map-panel">
     <div class="stats-strip">
-      <div class="strip-stat"><div class="strip-val" id="ss1">—</div><div class="strip-lbl">Locations Active</div></div>
+      <div class="strip-stat" style="display:flex;align-items:center;gap:10px;min-width:auto;">
+        <button id="btnAllLocs" onclick="resetToAll()" style="display:none;background:var(--accent);color:#000;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">← All</button>
+        <div><div class="strip-val" id="ss1">—</div><div class="strip-lbl" id="ss1lbl">Locations Active</div></div>
+      </div>
       <div class="strip-stat"><div class="strip-val" id="ss2">—</div><div class="strip-lbl">Nearby Businesses</div></div>
       <div class="strip-stat"><div class="strip-val" id="ss3">—</div><div class="strip-lbl">CRM Pipeline</div></div>
       <div class="strip-stat"><div class="strip-val" id="ss4">—</div><div class="strip-lbl">Customers Won</div></div>
@@ -577,6 +580,7 @@ function setBrand(brand) {
   renderLocList();
   renderMap();
   updateStats();
+  document.getElementById('btnAllLocs').style.display = 'none';
 }
 
 // ═══════════════════════════════════════════
@@ -658,6 +662,10 @@ function selectLoc(id) {
 
   renderLocList();
   openDetail(selectedLoc);
+  updateStats();
+
+  // Show "← All" button
+  document.getElementById('btnAllLocs').style.display = 'inline-block';
 
   // Pan map
   if (markers[id]) {
@@ -742,6 +750,20 @@ function openDetail(loc) {
 function closeDetail() {
   document.getElementById('detailDrawer').classList.remove('open');
   setTimeout(() => map && map.invalidateSize(), 320);
+}
+
+function resetToAll() {
+  selectedLoc = null;
+  closeDetail();
+  renderLocList();
+  updateStats();
+  document.getElementById('btnAllLocs').style.display = 'none';
+  // Zoom back out to show all locations
+  const locs = BRANDS[currentBrand].locations;
+  if (locs.length > 1 && map) {
+    const bounds = L.latLngBounds(locs.map(l => [l.lat, l.lng]));
+    map.fitBounds(bounds, { padding: [40, 40], animate: true });
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -889,18 +911,33 @@ function updateStats() {
   const brand = BRANDS[currentBrand];
   const locs = brand.locations;
   const activeLocs = locs.filter(l => l.status === 'active').length;
-  const locIds = locs.map(l => l.id);
-  const crm = getCRM().filter(l => locIds.includes(l.location));
-  const customers = crm.filter(l => l.status === 'customer').length;
-  const nearbyTotal = locIds.reduce((sum, id) => sum + (NEARBY[id] || DEFAULT_NEARBY).length, 0);
+  const allLocIds = locs.map(l => l.id);
+  const allCRM = getCRM().filter(l => allLocIds.includes(l.location));
+  const allCustomers = allCRM.filter(l => l.status === 'customer').length;
 
+  // Header stats always show totals
   document.getElementById('hStatLocs').textContent = activeLocs;
-  document.getElementById('hStatLeads').textContent = crm.length;
-  document.getElementById('hStatCustomers').textContent = customers;
-  document.getElementById('ss1').textContent = activeLocs;
-  document.getElementById('ss2').textContent = nearbyTotal + '+';
-  document.getElementById('ss3').textContent = crm.length;
-  document.getElementById('ss4').textContent = customers;
+  document.getElementById('hStatLeads').textContent = allCRM.length;
+  document.getElementById('hStatCustomers').textContent = allCustomers;
+
+  // Strip stats: show selected location or totals
+  if (selectedLoc) {
+    const locNearby = (NEARBY[selectedLoc.id] || DEFAULT_NEARBY).length;
+    const locCRM = getCRM().filter(l => l.location === selectedLoc.id);
+    const locCustomers = locCRM.filter(l => l.status === 'customer').length;
+    document.getElementById('ss1lbl').textContent = selectedLoc.name;
+    document.getElementById('ss1').textContent = selectedLoc.status === 'active' ? '✅ Active' : '🔜 Soon';
+    document.getElementById('ss2').textContent = locNearby + '+';
+    document.getElementById('ss3').textContent = locCRM.length;
+    document.getElementById('ss4').textContent = locCustomers;
+  } else {
+    const nearbyTotal = allLocIds.reduce((sum, id) => sum + (NEARBY[id] || DEFAULT_NEARBY).length, 0);
+    document.getElementById('ss1lbl').textContent = 'Locations Active';
+    document.getElementById('ss1').textContent = activeLocs;
+    document.getElementById('ss2').textContent = nearbyTotal + '+';
+    document.getElementById('ss3').textContent = allCRM.length;
+    document.getElementById('ss4').textContent = allCustomers;
+  }
 }
 
 // ═══════════════════════════════════════════
