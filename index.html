@@ -1011,15 +1011,15 @@ function mobileNav(view, fromLocSelect) {
 // SEED INITIAL DATA
 // ═══════════════════════════════════════════
 function seedInitialData() {
-  const SEED_VERSION = 'v4';
+  const SEED_VERSION = 'v5-enriched';
   const seedLeads = (typeof SEEDED_LEADS !== 'undefined') ? SEEDED_LEADS : [];
-  // Always patch existing seeded leads with latest data (picks up new fields like website)
+  // Always patch existing seeded leads with latest data (picks up enriched contact names)
   const crm = getCRM();
   const manual = crm.filter(l => !l.id.startsWith('seed_'));
-  // Merge: for each seed lead, use latest seed data but preserve status changes made by user
+  // Merge: preserve user-made status changes, but always take latest contact/notes from seed
   const merged = seedLeads.map(s => {
     const existing = crm.find(e => e.id === s.id);
-    if (existing) return { ...s, status: existing.status, contact: existing.contact, notes: existing.notes };
+    if (existing) return { ...s, status: existing.status };
     return s;
   });
   saveCRM([...manual, ...merged]);
